@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: rdicidr
+  name: rdicidr
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rdicidr
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: rdicidr
+    spec:
+      containers:
+      - image: wiltonpaulo/rdicidr:0.1.0
+        env:
+          - name: MY_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: my-secret
+                key: MY_SECRET
+        name: rdicidr
+        ports:
+        - containerPort: 3000
+        resources: {}
+status: {}
