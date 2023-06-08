@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  APP_NAME: rdicidr
+  APP_VERSION: 0.1.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: codebase/${{ env.APP_NAME }}-${{ env.APP_VERSION }}
+
+    - name: Linter (ESLint)
+      run: npm run lint
+      working-directory: codebase/${{ env.APP_NAME }}-${{ env.APP_VERSION }}
+
+    - name: Formatter (Prettier)
+      run: npm install prettier && npm run prettier
+      working-directory: codebase/${{ env.APP_NAME }}-${{ env.APP_VERSION }}
+
+    - name: Test (Jest)
+      run: npm run test
+      env:
+        CI: true
+      working-directory: codebase/${{ env.APP_NAME }}-${{ env.APP_VERSION }}
+
+    - name: Build
+      run: npm run build
+      working-directory: codebase/${{ env.APP_NAME }}-${{ env.APP_VERSION }}
