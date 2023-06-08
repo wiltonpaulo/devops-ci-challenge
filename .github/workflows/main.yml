@@ -22,7 +22,7 @@ jobs:
         node-version: '18'
 
     - name: Install dependencies
-      run: error npm install
+      run: npm install
       working-directory: codebase/${{ env.APP_NAME }}-${{ env.APP_VERSION }}
 
     - name: Linter (ESLint)
